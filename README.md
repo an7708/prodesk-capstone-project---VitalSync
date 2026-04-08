@@ -15,28 +15,9 @@
 
 ---
 
-## Table of Contents
-
-1. [Project Overview](#project-overview)
-2. [Tech Stack](#tech-stack)
-3. [User Roles and Permissions](#user-roles-and-permissions)
-4. [Core Features](#core-features)
-5. [Appointment Conflict Detection Logic](#appointment-conflict-detection-logic)
-6. [Data Scoping and Privacy Model](#data-scoping-and-privacy-model)
-7. [Database Architecture](#database-architecture)
-8. [API Endpoints](#api-endpoints)
-9. [Folder Structure](#folder-structure)
-10. [Environment Variables](#environment-variables)
-11. [Getting Started](#getting-started)
-12. [Figma Designs](#figma-designs)
-13. [Deployment](#deployment)
-14. [Future Scope](#future-scope)
-
----
-
 ## Project Overview
 
-VitalSync is a fullstack healthcare management platform inspired by real-world hospital software systems. The platform serves two types of authenticated users — Patients and Doctors — each with a completely separate dashboard, permission set, and user experience.
+VitalSync is a full-stack healthcare management platform inspired by real-world hospital software systems. The platform serves two types of authenticated users — Patients and Doctors — each with a completely separate dashboard, permission set, and user experience.
 
 The core problem VitalSync solves is the fragmentation of patient health data. In most small-to-mid-scale clinical setups, appointment booking, prescription management, and medical history are handled across separate tools or paper records. VitalSync consolidates all of this into a single, role-aware web application where every piece of data is scoped strictly to the users who are authorized to see it.
 
