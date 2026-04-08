@@ -610,8 +610,8 @@ The backend is deployed on Railway alongside the MongoDB database. The Express s
 | Service | Platform | URL |
 |---|---|---|
 | Frontend (Next.js) | Vercel | https://vitalsync.vercel.app |
-| Backend API (Express) | Railway | https://vitalsync-api.railway.app |
-| Database (MongoDB) | Railway | Internal connection via Railway private network |
+| Backend API (Express) | Render | https://vitalsync-api.render.app |
+| Database (MongoDB) | Render | Internal connection via Render private network |
 
 ---
 
@@ -631,4 +631,4 @@ The following features are outside the scope of this internship submission and a
 
 ## License
 
-This project was created as part of the ProDesk Internship Program. All rights reserved. Not licensed for commercial use or redistribution without explicit permission.
+This project was created as part of the ProDesk Internship Program. All rights reserved, not licensed for commercial use or redistribution without explicit permission.
