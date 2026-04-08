@@ -206,7 +206,7 @@ createdAt     Date       Auto-set on document creation
 
 **DoctorProfiles**
 
-Extended data for users with role `doctor`. References `Users` via `userId`. Created in the same request as the user document on registration.
+Extended data for users with the role `doctor`. References `Users` via `userId`. Created in the same request as the user document on registration.
 
 ```
 _id                 ObjectId   Primary key
@@ -220,7 +220,7 @@ availabilityStatus  String     Enum: online | busy | offline, defaults to offlin
 
 **PatientProfiles**
 
-Extended data for users with role `patient`. References `Users` via `userId`. Created in the same request as the user document on registration.
+Extended data for users with the role `patient`. References `Users` via `userId`. Created in the same request as the user document on registration.
 
 ```
 _id               ObjectId   Primary key
@@ -256,8 +256,8 @@ Defines bookable time windows for each doctor. Records are generated from the do
 _id             ObjectId   Primary key
 doctorId        ObjectId   FK to Users (role: doctor), indexed
 date            Date       The specific calendar date this slot applies to
-startTime       String     Format HH:MM in 24-hour time
-endTime         String     Format HH:MM in 24-hour time
+startTime       String     Format HH: MM in 24-hour time
+endTime         String     Format HH: MM in 24-hour time
 isBooked        Boolean    True when an appointment occupies this slot
 appointmentId   ObjectId   FK to Appointments, null when the slot is free
 ```
@@ -283,7 +283,7 @@ createdAt       Date
 
 **MedicalRecords**
 
-The source of truth for the patient history timeline. Every significant clinical event creates a record here. The `type` field drives the color-coded badge on the timeline UI.
+The source of truth for the patient history timeline. Every significant clinical event is recorded here. The `type` field drives the color-coded badge on the timeline UI.
 
 ```
 _id            ObjectId   Primary key
@@ -293,7 +293,7 @@ type           String     Enum: visit | diagnosis | prescription | lab_result
 title          String     Short event title displayed on the timeline card
 description    String     Full clinical notes or event details
 recordDate     Date       Date of the clinical event, not necessarily createdAt
-attachmentUrl  String     Optional URL to an uploaded file such as a lab report PDF
+attachmentUrl  String     Optional URL to an uploaded file, such as a lab report PDF
 relatedId      ObjectId   Optional FK to Appointments or Prescriptions
 createdAt      Date
 ```
@@ -305,7 +305,7 @@ Users ──< DoctorProfiles              one user has one doctor profile
 Users ──< PatientProfiles             one user has one patient profile
 Users ──< Appointments                one patient books many appointments
 Users ──< Appointments                one doctor receives many appointments
-Users ──< Prescriptions               one patient receives many prescriptions
+Users ──< Prescriptions,              one patient receives many prescriptions
 Users ──< MedicalRecords              one patient owns many records
 DoctorProfiles ──< AvailabilitySlots  one doctor defines many slots
 Appointments ──< Prescriptions        one appointment generates prescriptions
@@ -323,7 +323,7 @@ All endpoints are prefixed with `/api`. All protected routes require a valid JWT
 ```
 POST   /api/auth/register                   Register a new patient or doctor account
 POST   /api/auth/login                      Authenticate and receive JWT
-POST   /api/auth/logout                     Invalidate the current session
+POST   /api/auth/logout:                     Invalidate the current session
 GET    /api/auth/me                         Return the current authenticated user profile
 ```
 
@@ -341,7 +341,7 @@ GET    /api/appointments/doctor/:doctorId  Get a doctor's full schedule — Doct
 ### Doctors
 
 ```
-GET    /api/doctors                         List all active doctors with optional specialty filter
+GET    /api/doctors                         List all active doctors with an optional specialty filter
 GET    /api/doctors/:id                     Get doctor profile and current availability status
 GET    /api/doctors/:id/slots               Get available booking slots for a given date
 PATCH  /api/doctors/:id/availability        Update real-time presence status — Doctor only
@@ -496,7 +496,7 @@ NODE_ENV=development
 
 - Node.js v18 or higher
 - npm v9 or higher
-- A MongoDB Atlas account, free tier is sufficient for local development
+- A MongoDB Atlas account, free tier, is sufficient for local development
 - Git
 
 ### Installation
