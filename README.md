@@ -596,7 +596,6 @@ Exported screen previews are included in this repository under `docs/screens/` a
 The entity relationship diagram below documents all six MongoDB collections, their fields, and their relationships. Generated using dbdiagram.io.
 
 ![ERD Diagram](./erd.png)
-https://github.com/an7708/prodesk-capstone-project---VitalSync/blob/main/erd.png
 
 ---
 
