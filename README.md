@@ -63,7 +63,7 @@ This project is designed to reflect the architecture, code organization, and UI 
 | Technology | Purpose |
 |---|---|
 | Vercel | Frontend deployment and CI/CD |
-| Railway | Backend API and MongoDB deployment |
+| Render | Backend API and MongoDB deployment |
 | GitHub Actions | Automated linting and build checks on pull requests |
 | ESLint + Prettier | Code style enforcement across the entire codebase |
 | Postman | API development and manual endpoint testing |
@@ -79,7 +79,7 @@ VitalSync implements strict role-based access control enforced at both the route
 
 A patient can register and log in independently. Once authenticated, a patient can browse available doctors filtered by specialty, book appointments from a doctor's available time slots, view their own complete chronological medical history, read their own active and expired prescriptions, and update their own personal profile.
 
-A patient cannot view another patient's records under any circumstance. A patient cannot access any doctor-only routes. A patient cannot modify an appointment that has already been confirmed or completed.
+A patient cannot view another patient's records under any circumstances. A patient cannot access any doctor-only routes. A patient cannot modify an appointment that has already been confirmed or completed.
 
 ### Doctor
 
@@ -95,7 +95,7 @@ A doctor cannot access the records of any patient outside their direct care. The
 
 - JWT-based authentication with secure HttpOnly cookie storage
 - Role declaration at registration with server-side role verification on every protected request
-- Protected routes enforced at Next.js middleware level using the session role claim
+- Protected routes enforced at the Next.js middleware level using the session role claim
 - Separate post-login redirects rendering completely different dashboards per role
 - Password hashing with bcryptjs at 12 salt rounds, hash never returned in any API response
 - Session persistence with NextAuth.js and configurable token expiry
@@ -120,7 +120,7 @@ A doctor cannot access the records of any patient outside their direct care. The
 ### Doctor Dashboard
 
 - Daily schedule rendered as a vertical timeline showing all appointments for the current day
-- Each appointment card displays patient name, visit reason, scheduled time, duration, and current status
+- Each appointment card displays patient's name, visit reason, scheduled time, duration, and current status
 - Inline status update controls to confirm, complete, or cancel without navigating away from the schedule
 - Quick stats panel showing total patients seen this week, pending appointments, and prescriptions written this month
 - Patient lookup restricted to patients under the doctor's active care
@@ -135,17 +135,17 @@ A doctor cannot access the records of any patient outside their direct care. The
 ### Medical History Timeline
 
 - Full chronological timeline of every medical event associated with the authenticated patient
-- Event types of Visit, Diagnosis, Prescription, and Lab Result each rendered with a distinct color-coded badge
+- Event types of Visit, Diagnosis, Prescription, and Lab Result are each rendered with a distinct color-coded badge
 - Timeline filterable by event type without a full page reload
 - Each timeline card shows date, event type, attending doctor name, and a brief description
 - Expandable card view reveals full clinical notes or prescription details inline
-- Timeline accessible to the patient in read-only mode and to the treating doctor scoped to their shared appointments
+- Timeline accessible to the patient in read-only mode and to the treating doctor, scoped to their shared appointments
 
 ### Prescriptions Management
 
 - Doctors write prescriptions linked to a specific appointment from within the appointment detail view
-- Each prescription stores drug name, dosage, frequency, start date, end date, patient instructions, and refill count
-- Patients view all active and expired prescriptions in a card layout sorted by most recent
+- Each prescription stores the drug name, dosage, frequency, start date, end date, patient instructions, and refill count
+- Patients view all active and expired prescriptions in a card layout, sorted by most recent
 - Prescriptions within 7 days of expiry are flagged with a visible warning indicator
 - Expired prescriptions are visually separated into a Past Prescriptions section
 
@@ -171,13 +171,13 @@ When an appointment is cancelled, the server reverses this in a single operation
 
 ## Data Scoping and Privacy Model
 
-The absence of a global administrator role in this system is a deliberate privacy decision, not a scope reduction. This section documents how patient data privacy is enforced architecturally so that it is clear the protection exists at the data layer and not just the interface layer.
+The absence of a global administrator role in this system is a deliberate privacy decision, not a scope reduction. This section documents how patient data privacy is enforced architecturally so that it is clear that the protection exists at the data layer and not just the interface layer.
 
 Every API endpoint that returns patient data — medical history, prescriptions, profile information — runs a scope verification step before executing the main database query. This verification checks that the authenticated user is either the patient themselves, or a doctor who has at least one appointment with that patient where the appointment status is `confirmed` or `completed`. This check is implemented as a dedicated `scopeGuard` middleware function that runs on the route before the controller function is reached.
 
-For example, when a doctor requests `GET /api/patients/:id/history`, the `scopeGuard` middleware queries the `Appointments` collection for a document where `doctorId` equals the authenticated user's ID, `patientId` equals the requested patient ID, and `status` is either `confirmed` or `completed`. If no such appointment exists, the server returns `403 Forbidden` and the controller that fetches the medical records is never executed.
+For example, when a doctor requests `GET /api/patients/:id/history`, the `scopeGuard` middleware queries the `Appointments` collection for a document where `doctorId` equals the authenticated user's ID, `patientId` equals the requested patient ID, and `status` is either `confirmed` or `completed`. If no such appointment exists, the server returns `403 Forbidden,` and the controller that fetches the medical records is never executed.
 
-This means that even if a valid doctor JWT token were used to make a direct API call bypassing the frontend entirely, the server would still refuse to return any patient data outside that doctor's direct care. Navigation items being hidden in the UI is a user experience decision. The `scopeGuard` middleware is the actual security boundary.
+This means that even if a valid doctor JWT token were used to make a direct API call by passing the frontend entirely, the server would still refuse to return any patient data outside that doctor's direct care. Navigation items being hidden in the UI is a user experience decision. The `scopeGuard` middleware is the actual security boundary.
 
 No role in the system has access to a list of all patients, all appointments system-wide, or all prescriptions. Every query is anchored to the authenticated user's own ID, either as the patient owner of the data or as the verified treating doctor with a confirmed appointment relationship.
 
