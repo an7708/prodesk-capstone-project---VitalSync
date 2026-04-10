@@ -562,7 +562,7 @@ npm run seed
 
 All UI wireframes were designed in Figma before any code was written. The file covers both the Patient and Doctor experiences across five core screens.
 
-**Figma File:** [View VitalSync UI Wireframes](https://figma.com/your-link-here)
+**Figma File:** [View VitalSync UI Wireframes](https://www.figma.com/design/HG8kIQ04dSiatZwaF91hv1/Preclinic---Free-Medical---Clinic-Management-Dashboard-Figma-UI-Kit--Community-?node-id=12-714&t=nNQe3KaBPp7pAwGM-1)
 
 Exported screen previews are included in this repository under `docs/screens/` and embedded below.
 
@@ -575,16 +575,20 @@ Exported screen previews are included in this repository under `docs/screens/` a
 | 05 — Medical Timeline | Chronological event list with type filter and expandable cards |
 
 **Login Page**
-![Login Page](./docs/screens/01-login.png)
+<img width="1440" height="1000" alt="image" src="https://github.com/user-attachments/assets/f64ae6d3-765e-46f3-9a2e-ef8c5099bf84" />
+
 
 **Patient Dashboard**
-![Patient Dashboard](./docs/screens/02-patient-dashboard.png)
+<img width="1440" height="1915" alt="image" src="https://github.com/user-attachments/assets/76e7650b-a28b-4ec7-9134-906755dfc029" />
+
 
 **Appointment Booking Wizard**
-![Appointment Booking](./docs/screens/03-book-appointment.png)
+<img width="1440" height="1016" alt="image" src="https://github.com/user-attachments/assets/162ca7f9-8d82-4c9e-bb86-9dc251337c91" />
+
 
 **Doctor Dashboard**
-![Doctor Dashboard](./docs/screens/04-doctor-dashboard.png)
+<img width="1440" height="1912" alt="image" src="https://github.com/user-attachments/assets/0a4c1854-b6fa-458a-95ae-c73a9f52d148" />
+   
 
 **Medical History Timeline**
 ![Medical Timeline](./docs/screens/05-medical-timeline.png)
