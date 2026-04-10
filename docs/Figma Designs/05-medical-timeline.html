@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=1440"/>
+<title>VitalSync — Medical History</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1440px;min-height:900px;font-family:'DM Sans',sans-serif;display:flex;overflow:hidden;background:#F8FAFC;}
+.sidebar{width:232px;min-width:232px;background:#fff;border-right:1px solid #F1F5F9;display:flex;flex-direction:column;padding:20px 12px;}
+.brand{display:flex;align-items:center;gap:10px;padding:8px 8px 24px;}
+.brand-icon{width:32px;height:32px;background:#0D9488;border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.brand-name{font-size:16px;font-weight:600;color:#0F172A;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:500;color:#64748B;margin-bottom:2px;}
+.nav-item.active{background:#F0FDF9;color:#0D9488;}
+.nav-item svg{flex-shrink:0;}
+.user-section{margin-top:auto;padding:16px 8px 0;border-top:1px solid #F1F5F9;}
+.avatar{width:34px;height:34px;border-radius:50%;background:#CCFBF1;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#065F46;flex-shrink:0;}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:#fff;border-bottom:1px solid #F1F5F9;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.page-title{font-size:17px;font-weight:600;color:#0F172A;}
+.content{flex:1;padding:28px 32px;overflow-y:auto;display:flex;gap:28px;}
+.timeline-col{flex:1;display:flex;flex-direction:column;gap:0;}
+.tl-header{margin-bottom:20px;}
+.tl-title{font-size:18px;font-weight:600;color:#0F172A;margin-bottom:3px;}
+.tl-sub{font-size:13px;color:#94A3B8;}
+.filter-row{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+.filter-pill{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid #E2E8F0;background:transparent;color:#64748B;font-family:'DM Sans',sans-serif;}
+.filter-pill.active{background:#0D9488;color:#fff;border-color:#0D9488;}
+.timeline{position:relative;padding-left:20px;}
+.tl-line{position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:#F1F5F9;}
+.tl-entry{position:relative;margin-bottom:18px;}
+.tl-dot{position:absolute;left:-20px;top:16px;width:13px;height:13px;border-radius:50%;border:2.5px solid #fff;z-index:1;}
+.tl-card{background:#fff;border:1px solid #F1F5F9;border-radius:14px;padding:18px 20px;}
+.tl-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
+.tl-card-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.tl-event-title{font-size:14px;font-weight:600;color:#0F172A;}
+.badge{display:inline-block;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600;}
+.tl-date{font-size:12px;color:#CBD5E1;white-space:nowrap;margin-left:8px;}
+.tl-doctor{font-size:12px;color:#94A3B8;margin-bottom:8px;}
+.tl-desc{font-size:13px;color:#475569;line-height:1.55;}
+.tl-link{font-size:12px;color:#0D9488;font-weight:500;cursor:pointer;margin-top:10px;display:inline-block;}
+.sidebar-col{width:260px;min-width:260px;display:flex;flex-direction:column;gap:14px;}
+.info-card{background:#fff;border:1px solid #F1F5F9;border-radius:14px;padding:18px 20px;}
+.info-title{font-size:13px;font-weight:600;color:#0F172A;margin-bottom:12px;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #F8FAFC;}
+.info-row:last-child{border-bottom:none;}
+.info-label{font-size:12px;color:#94A3B8;}
+.info-val{font-size:12px;font-weight:500;color:#0F172A;}
+.export-btn{width:100%;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:11px;font-size:13px;font-weight:500;color:#64748B;cursor:pointer;font-family:'DM Sans',sans-serif;}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="brand">
+    <div class="brand-icon"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2a4 4 0 100 8 4 4 0 000-8zM3 18c0-3.87 3.13-7 7-7s7 3.13 7 7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+    <span class="brand-name">VitalSync</span>
+  </div>
+  <div class="nav-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="#64748B"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="#64748B"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="#64748B"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="#64748B"/></svg>Dashboard</div>
+  <div class="nav-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#64748B" stroke-width="1.3"/><path d="M5 1v2M11 1v2M2 6h12" stroke="#64748B" stroke-width="1.3" stroke-linecap="round"/></svg>My appointments</div>
+  <div class="nav-item active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h7M3 12h5" stroke="#0D9488" stroke-width="1.3" stroke-linecap="round"/></svg>Medical history</div>
+  <div class="nav-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#64748B" stroke-width="1.3"/><path d="M8 5v6M5 8h6" stroke="#64748B" stroke-width="1.3" stroke-linecap="round"/></svg>Prescriptions</div>
+  <div class="nav-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="#64748B" stroke-width="1.3"/><path d="M2 14c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="#64748B" stroke-width="1.3" stroke-linecap="round"/></svg>My profile</div>
+  <div class="user-section">
+    <div style="display:flex;align-items:center;gap:10px;"><div class="avatar">SK</div><div><div style="font-size:13px;font-weight:500;color:#0F172A;">Sarah Khan</div><div style="font-size:11px;color:#94A3B8;">Patient</div></div></div>
+  </div>
+</div>
+<div class="main">
+  <div class="topbar">
+    <div class="page-title">Medical history</div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:20px;padding:7px 16px;font-size:13px;color:#94A3B8;width:200px;">Search records...</div>
+      <div class="avatar">SK</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="timeline-col">
+      <div class="tl-header">
+        <div class="tl-title">Sarah Khan</div>
+        <div class="tl-sub">Patient ID VSP-0042 · Member since March 2025</div>
+      </div>
+      <div class="filter-row">
+        <button class="filter-pill active">All events</button>
+        <button class="filter-pill">Visits</button>
+        <button class="filter-pill">Diagnoses</button>
+        <button class="filter-pill">Prescriptions</button>
+        <button class="filter-pill">Lab results</button>
+      </div>
+      <div class="timeline">
+        <div class="tl-line"></div>
+        <div class="tl-entry">
+          <div class="tl-dot" style="background:#0D9488;"></div>
+          <div class="tl-card">
+            <div class="tl-card-top">
+              <div class="tl-card-left"><span class="tl-event-title">General consultation</span><span class="badge" style="background:#CCFBF1;color:#065F46;">Visit</span></div>
+              <span class="tl-date">12 Jun 2025</span>
+            </div>
+            <div class="tl-doctor">Dr. A. Patel — General Physician</div>
+            <div class="tl-desc">Routine checkup. BP reading 128/84 mmHg — slightly elevated. Advised increased water intake, reduced sodium diet, and light daily exercise. Follow-up scheduled in 3 months.</div>
+            <span class="tl-link">View full visit notes</span>
+          </div>
+        </div>
+        <div class="tl-entry">
+          <div class="tl-dot" style="background:#10B981;"></div>
+          <div class="tl-card">
+            <div class="tl-card-top">
+              <div class="tl-card-left"><span class="tl-event-title">Amoxicillin prescribed</span><span class="badge" style="background:#D1FAE5;color:#065F46;">Prescription</span></div>
+              <span class="tl-date">12 Jun 2025</span>
+            </div>
+            <div class="tl-doctor">Dr. A. Patel — General Physician</div>
+            <div class="tl-desc">Amoxicillin 500mg — twice daily for 7 days. Take with food. Avoid alcohol during course. No refills. Prescribed following throat infection diagnosis.</div>
+            <span class="tl-link">View prescription details</span>
+          </div>
+        </div>
+        <div class="tl-entry">
+          <div class="tl-dot" style="background:#F59E0B;"></div>
+          <div class="tl-card">
+            <div class="tl-card-top">
+              <div class="tl-card-left"><span class="tl-event-title">Blood panel — all clear</span><span class="badge" style="background:#FEF3C7;color:#92400E;">Lab result</span></div>
+              <span class="tl-date">28 May 2025</span>
+            </div>
+            <div class="tl-doctor">Pathology Lab — ordered by Dr. Patel</div>
+            <div class="tl-desc">Complete blood count, lipid profile, and fasting blood glucose — all values within normal range. Total cholesterol 198 mg/dL, slightly elevated LDL noted. Monitor at next visit.</div>
+            <span class="tl-link">View full lab report</span>
+          </div>
+        </div>
+        <div class="tl-entry">
+          <div class="tl-dot" style="background:#EF4444;"></div>
+          <div class="tl-card">
+            <div class="tl-card-top">
+              <div class="tl-card-left"><span class="tl-event-title">Mild hypertension diagnosed</span><span class="badge" style="background:#FEE2E2;color:#991B1B;">Diagnosis</span></div>
+              <span class="tl-date">3 Mar 2025</span>
+            </div>
+            <div class="tl-doctor">Dr. S. Rao — Cardiologist</div>
+            <div class="tl-desc">Stage 1 hypertension confirmed. Blood pressure consistently above 130/80 mmHg across three readings. Lifestyle modifications strongly advised — low-sodium diet, 30 minutes of daily moderate exercise. Medication not yet required. Follow-up in 3 months.</div>
+            <span class="tl-link">View full diagnosis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-col">
+      <div class="info-card">
+        <div class="info-title">Patient summary</div>
+        <div class="info-row"><span class="info-label">Full name</span><span class="info-val">Sarah Khan</span></div>
+        <div class="info-row"><span class="info-label">Date of birth</span><span class="info-val">14 Aug 1992</span></div>
+        <div class="info-row"><span class="info-label">Blood type</span><span class="info-val">B+</span></div>
+        <div class="info-row"><span class="info-label">Allergies</span><span class="info-val">Penicillin</span></div>
+        <div class="info-row"><span class="info-label">Total events</span><span class="info-val">12</span></div>
+        <div class="info-row"><span class="info-label">Treating doctors</span><span class="info-val">2</span></div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">Active prescriptions</div>
+        <div style="background:#F0FDF9;border-radius:9px;padding:12px 14px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:600;color:#0F172A;">Amoxicillin 500mg</div>
+          <div style="font-size:12px;color:#64748B;margin-top:2px;">Twice daily · expires 19 Jun</div>
+          <div style="font-size:11px;color:#D97706;margin-top:4px;font-weight:500;">Expiring in 5 days</div>
+        </div>
+        <div style="background:#F8FAFC;border-radius:9px;padding:12px 14px;">
+          <div style="font-size:13px;font-weight:600;color:#0F172A;">Amlodipine 5mg</div>
+          <div style="font-size:12px;color:#64748B;margin-top:2px;">Once daily · expires 3 Sep</div>
+          <div style="font-size:11px;color:#10B981;margin-top:4px;font-weight:500;">Active</div>
+        </div>
+      </div>
+      <button class="export-btn">Export full history as PDF</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

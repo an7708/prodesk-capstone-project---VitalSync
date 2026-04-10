@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=1440"/>
+<title>VitalSync — Book Appointment</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1440px;min-height:900px;font-family:'DM Sans',sans-serif;background:#F8FAFC;display:flex;align-items:center;justify-content:center;padding:40px;}
+.wizard-wrap{background:#fff;border-radius:20px;border:1px solid #E2E8F0;width:100%;max-width:1100px;overflow:hidden;}
+.wizard-header{padding:28px 36px;border-bottom:1px solid #F1F5F9;}
+.wizard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+.wizard-title{font-size:20px;font-weight:600;color:#0F172A;}
+.close-btn{width:32px;height:32px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.steps{display:flex;align-items:center;gap:0;}
+.step{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.step-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;}
+.step-circle.done{background:#0D9488;color:#fff;}
+.step-circle.current{background:#0D9488;color:#fff;}
+.step-circle.upcoming{background:#F1F5F9;color:#94A3B8;border:1.5px solid #E2E8F0;}
+.step-label{font-size:12px;font-weight:500;}
+.step-label.done{color:#0D9488;}
+.step-label.current{color:#0D9488;}
+.step-label.upcoming{color:#94A3B8;}
+.step-connector{width:120px;height:2px;margin-bottom:18px;}
+.step-connector.done{background:#0D9488;}
+.step-connector.upcoming{background:#E2E8F0;}
+.wizard-body{display:flex;height:520px;}
+.doctor-panel{width:280px;min-width:280px;border-right:1px solid #F1F5F9;display:flex;flex-direction:column;}
+.panel-header{padding:18px 20px;border-bottom:1px solid #F8FAFC;}
+.panel-label{font-size:12px;font-weight:600;color:#94A3B8;letter-spacing:0.5px;margin-bottom:10px;}
+.search-input{width:100%;border:1.5px solid #E2E8F0;border-radius:9px;padding:9px 12px;font-size:13px;color:#0F172A;font-family:'DM Sans',sans-serif;outline:none;}
+.search-input::placeholder{color:#CBD5E1;}
+.doctor-list{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:4px;}
+.doc-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;border:1.5px solid transparent;}
+.doc-row.selected{border-color:#0D9488;background:#F0FDF9;}
+.doc-row:hover:not(.selected){background:#F8FAFC;}
+.doc-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.doc-info{flex:1;min-width:0;}
+.doc-name{font-size:13px;font-weight:600;color:#0F172A;}
+.doc-spec{font-size:11px;color:#94A3B8;}
+.avail-indicator{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.calendar-panel{flex:1;padding:20px 24px;border-right:1px solid #F1F5F9;display:flex;flex-direction:column;gap:18px;}
+.cal-header{display:flex;align-items:center;justify-content:space-between;}
+.cal-month{font-size:14px;font-weight:600;color:#0F172A;}
+.cal-nav{display:flex;gap:6px;}
+.cal-btn{width:28px;height:28px;border-radius:7px;border:1px solid #E2E8F0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;}
+.cal-dow{font-size:11px;font-weight:600;color:#94A3B8;padding:6px 2px;}
+.cal-day{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;margin:0 auto;}
+.cal-day.past{color:#CBD5E1;cursor:default;}
+.cal-day.today{border:2px solid #0D9488;color:#0D9488;font-weight:600;}
+.cal-day.selected{background:#0D9488;color:#fff;font-weight:600;}
+.cal-day.normal:hover{background:#F0FDF9;}
+.slots-panel{width:260px;min-width:260px;padding:20px 20px;display:flex;flex-direction:column;gap:14px;}
+.slots-label{font-size:12px;font-weight:600;color:#94A3B8;letter-spacing:0.5px;}
+.slots-date{font-size:14px;font-weight:600;color:#0F172A;margin-top:-8px;}
+.slots-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.slot{padding:9px 10px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid #E2E8F0;text-align:center;color:#0F172A;}
+.slot.selected{background:#0D9488;color:#fff;border-color:#0D9488;}
+.slot.booked{background:#F8FAFC;color:#CBD5E1;cursor:not-allowed;text-decoration:line-through;border-color:#F1F5F9;}
+.slot.normal:hover{border-color:#0D9488;color:#0D9488;}
+.wizard-footer{padding:18px 36px;border-top:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;}
+.footer-summary{font-size:13px;color:#64748B;}
+.footer-summary span{font-weight:600;color:#0F172A;}
+.btn-row{display:flex;gap:10px;}
+.btn-back{padding:10px 22px;border-radius:10px;border:1.5px solid #E2E8F0;background:transparent;color:#64748B;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-next{padding:10px 26px;border-radius:10px;border:none;background:#0D9488;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+</style>
+</head>
+<body>
+<div class="wizard-wrap">
+  <div class="wizard-header">
+    <div class="wizard-top">
+      <div class="wizard-title">Book an appointment</div>
+      <div class="close-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#64748B" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-circle done">1</div><span class="step-label done">Choose doctor</span></div>
+      <div class="step-connector done"></div>
+      <div class="step"><div class="step-circle current">2</div><span class="step-label current">Date and time</span></div>
+      <div class="step-connector upcoming"></div>
+      <div class="step"><div class="step-circle upcoming">3</div><span class="step-label upcoming">Confirm</span></div>
+    </div>
+  </div>
+  <div class="wizard-body">
+    <div class="doctor-panel">
+      <div class="panel-header">
+        <div class="panel-label">SELECT DOCTOR</div>
+        <input class="search-input" placeholder="Search by name or specialty"/>
+      </div>
+      <div class="doctor-list">
+        <div class="doc-row selected">
+          <div class="doc-av" style="background:#EEF2FF;color:#4F46E5;">AP</div>
+          <div class="doc-info"><div class="doc-name">Dr. A. Patel</div><div class="doc-spec">General Physician</div></div>
+          <div class="avail-indicator" style="background:#10B981;"></div>
+        </div>
+        <div class="doc-row">
+          <div class="doc-av" style="background:#FEF3C7;color:#92400E;">SR</div>
+          <div class="doc-info"><div class="doc-name">Dr. S. Rao</div><div class="doc-spec">Cardiologist</div></div>
+          <div class="avail-indicator" style="background:#F59E0B;"></div>
+        </div>
+        <div class="doc-row">
+          <div class="doc-av" style="background:#FCE7F3;color:#9D174D;">MK</div>
+          <div class="doc-info"><div class="doc-name">Dr. M. Khan</div><div class="doc-spec">Neurologist</div></div>
+          <div class="avail-indicator" style="background:#EF4444;"></div>
+        </div>
+        <div class="doc-row">
+          <div class="doc-av" style="background:#F0FDF4;color:#166534;">NV</div>
+          <div class="doc-info"><div class="doc-name">Dr. N. Verma</div><div class="doc-spec">Dermatologist</div></div>
+          <div class="avail-indicator" style="background:#10B981;"></div>
+        </div>
+        <div class="doc-row">
+          <div class="doc-av" style="background:#EFF6FF;color:#1D4ED8;">RG</div>
+          <div class="doc-info"><div class="doc-name">Dr. R. Gupta</div><div class="doc-spec">Pediatrician</div></div>
+          <div class="avail-indicator" style="background:#10B981;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="calendar-panel">
+      <div class="cal-header">
+        <div class="cal-month">July 2025</div>
+        <div class="cal-nav">
+          <button class="cal-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6l4 4" stroke="#64748B" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+          <button class="cal-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 2l4 4-4 4" stroke="#64748B" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        </div>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-dow">Mo</div><div class="cal-dow">Tu</div><div class="cal-dow">We</div><div class="cal-dow">Th</div><div class="cal-dow">Fr</div><div class="cal-dow">Sa</div><div class="cal-dow">Su</div>
+        <div class="cal-day past">1</div><div class="cal-day past">2</div><div class="cal-day past">3</div><div class="cal-day today">4</div><div class="cal-day normal">5</div><div class="cal-day normal">6</div><div class="cal-day normal">7</div>
+        <div class="cal-day normal">8</div><div class="cal-day normal">9</div><div class="cal-day selected">10</div><div class="cal-day normal">11</div><div class="cal-day normal">12</div><div class="cal-day normal">13</div><div class="cal-day normal">14</div>
+        <div class="cal-day normal">15</div><div class="cal-day normal">16</div><div class="cal-day normal">17</div><div class="cal-day normal">18</div><div class="cal-day normal">19</div><div class="cal-day normal">20</div><div class="cal-day normal">21</div>
+        <div class="cal-day normal">22</div><div class="cal-day normal">23</div><div class="cal-day normal">24</div><div class="cal-day normal">25</div><div class="cal-day normal">26</div><div class="cal-day normal">27</div><div class="cal-day normal">28</div>
+        <div class="cal-day normal">29</div><div class="cal-day normal">30</div><div class="cal-day normal">31</div>
+      </div>
+    </div>
+    <div class="slots-panel">
+      <div class="slots-label">AVAILABLE SLOTS</div>
+      <div class="slots-date">Thursday, 10 Jul</div>
+      <div class="slots-grid">
+        <div class="slot booked">09:00</div>
+        <div class="slot booked">09:30</div>
+        <div class="slot normal">10:00</div>
+        <div class="slot selected">10:30</div>
+        <div class="slot normal">11:00</div>
+        <div class="slot normal">11:30</div>
+        <div class="slot booked">12:00</div>
+        <div class="slot booked">12:30</div>
+        <div class="slot normal">14:00</div>
+        <div class="slot normal">14:30</div>
+        <div class="slot normal">15:00</div>
+        <div class="slot normal">15:30</div>
+      </div>
+      <div style="margin-top:auto;background:#F0FDF9;border:1px solid #A7F3D0;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:11px;color:#065F46;font-weight:600;margin-bottom:4px;">Selected slot</div>
+        <div style="font-size:13px;font-weight:600;color:#0F172A;">Thu 10 Jul — 10:30 am</div>
+        <div style="font-size:12px;color:#64748B;margin-top:2px;">Dr. A. Patel · 30 min</div>
+      </div>
+    </div>
+  </div>
+  <div class="wizard-footer">
+    <div class="footer-summary">Booking with <span>Dr. A. Patel</span> on <span>Thu 10 Jul at 10:30 am</span></div>
+    <div class="btn-row">
+      <button class="btn-back">Back</button>
+      <button class="btn-next">Next: confirm booking</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

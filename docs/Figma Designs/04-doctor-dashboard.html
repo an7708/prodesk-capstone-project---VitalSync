@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=1440"/>
+<title>VitalSync — Doctor Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1440px;height:900px;font-family:'DM Sans',sans-serif;display:flex;overflow:hidden;background:#F8FAFC;}
+.sidebar{width:232px;min-width:232px;background:#1E1B4B;display:flex;flex-direction:column;padding:20px 12px;}
+.brand{display:flex;align-items:center;gap:10px;padding:8px 8px 28px;}
+.brand-icon{width:32px;height:32px;background:#4F46E5;border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.brand-name{font-size:16px;font-weight:600;color:#fff;}
+.nav-section{font-size:10px;font-weight:600;color:rgba(255,255,255,0.3);letter-spacing:0.8px;padding:0 10px;margin-bottom:6px;margin-top:4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:500;color:rgba(255,255,255,0.5);margin-bottom:2px;}
+.nav-item.active{background:rgba(79,70,229,0.3);color:#fff;}
+.nav-item svg{flex-shrink:0;}
+.user-section{margin-top:auto;padding:16px 8px 0;border-top:1px solid rgba(255,255,255,0.08);}
+.user-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.avatar-d{width:34px;height:34px;border-radius:50%;background:#4F46E5;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0;}
+.user-name{font-size:13px;font-weight:500;color:#fff;}
+.user-role{font-size:11px;color:rgba(255,255,255,0.4);}
+.online-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:20px;padding:5px 12px;}
+.online-dot{width:6px;height:6px;border-radius:50%;background:#10B981;}
+.online-text{font-size:12px;color:#10B981;font-weight:500;}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:#fff;border-bottom:1px solid #F1F5F9;padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.page-title{font-size:17px;font-weight:600;color:#0F172A;}
+.date-sub{font-size:13px;color:#94A3B8;margin-left:10px;font-weight:400;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.body-area{flex:1;display:flex;overflow:hidden;}
+.schedule-panel{flex:1;padding:22px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
+.panel-title{font-size:14px;font-weight:600;color:#0F172A;margin-bottom:4px;}
+.appt-row{display:flex;align-items:stretch;gap:14px;}
+.appt-time{min-width:52px;text-align:right;padding-top:12px;}
+.appt-time-val{font-size:13px;font-weight:600;color:#64748B;}
+.appt-time-dur{font-size:11px;color:#CBD5E1;margin-top:2px;}
+.appt-card{flex:1;border-radius:12px;border:1px solid #F1F5F9;padding:14px 16px;background:#fff;}
+.appt-card.active{border-left:3px solid #4F46E5;background:#FAFAFE;}
+.appt-card.done{opacity:0.55;}
+.appt-top{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.appt-patient{font-size:14px;font-weight:600;color:#0F172A;}
+.status-pill{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.appt-reason{font-size:12px;color:#64748B;}
+.appt-actions{display:flex;gap:8px;margin-top:10px;}
+.btn-primary-sm{padding:6px 14px;border-radius:7px;background:#4F46E5;color:#fff;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-ghost-sm{padding:6px 14px;border-radius:7px;background:transparent;color:#64748B;border:1px solid #E2E8F0;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.stats-col{width:220px;min-width:220px;padding:22px 18px;border-left:1px solid #F1F5F9;background:#fff;display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
+.stats-title{font-size:13px;font-weight:600;color:#0F172A;margin-bottom:2px;}
+.stat-mini{background:#F8FAFC;border-radius:10px;padding:12px 14px;}
+.stat-mini-label{font-size:11px;color:#94A3B8;margin-bottom:4px;}
+.stat-mini-val{font-size:22px;font-weight:600;color:#0F172A;}
+.pending-card{background:#fff;border:1px solid #F1F5F9;border-radius:10px;padding:12px 14px;}
+.pending-name{font-size:13px;font-weight:600;color:#0F172A;}
+.pending-note{font-size:12px;color:#94A3B8;margin-top:1px;}
+.pending-action{font-size:12px;color:#4F46E5;font-weight:500;cursor:pointer;margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="brand">
+    <div class="brand-icon"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2a4 4 0 100 8 4 4 0 000-8zM3 18c0-3.87 3.13-7 7-7s7 3.13 7 7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+    <span class="brand-name">VitalSync</span>
+  </div>
+  <div class="nav-section">MAIN MENU</div>
+  <div class="nav-item active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="#fff"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="#fff"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="#fff"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="#fff"/></svg>Dashboard</div>
+  <div class="nav-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/><path d="M5 1v2M11 1v2M2 6h12" stroke="rgba(255,255,255,0.4)" stroke-width="1.3" stroke-linecap="round"/></svg>Today's schedule</div>
+  <div class="nav-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/><path d="M2 14c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="rgba(255,255,255,0.4)" stroke-width="1.3" stroke-linecap="round"/></svg>My patients</div>
+  <div class="nav-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/><path d="M8 5v6M5 8h6" stroke="rgba(255,255,255,0.4)" stroke-width="1.3" stroke-linecap="round"/></svg>Prescriptions</div>
+  <div class="nav-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="rgba(255,255,255,0.4)" stroke-width="1.3"/><path d="M8 5v3l2 2" stroke="rgba(255,255,255,0.4)" stroke-width="1.3" stroke-linecap="round"/></svg>Availability</div>
+  <div class="user-section">
+    <div class="user-row"><div class="avatar-d">AP</div><div><div class="user-name">Dr. A. Patel</div><div class="user-role">General Physician</div></div></div>
+    <div class="online-pill"><div class="online-dot"></div><span class="online-text">Online</span></div>
+  </div>
+</div>
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:baseline;"><span class="page-title">Dashboard</span><span class="date-sub">Friday, 4 Jul 2025</span></div>
+    <div class="topbar-right">
+      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:20px;padding:7px 16px;font-size:13px;color:#94A3B8;width:220px;">Search patients...</div>
+      <div style="width:34px;height:34px;border-radius:50%;background:#EEF2FF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#4F46E5;">AP</div>
+    </div>
+  </div>
+  <div class="body-area">
+    <div class="schedule-panel">
+      <div class="panel-title">Today's schedule</div>
+      <div class="appt-row">
+        <div class="appt-time"><div class="appt-time-val" style="color:#CBD5E1;">09:00</div><div class="appt-time-dur">30 min</div></div>
+        <div class="appt-card done">
+          <div class="appt-top"><span class="appt-patient">Sarah Khan</span><span class="status-pill" style="background:#F1F5F9;color:#94A3B8;">Completed</span></div>
+          <div class="appt-reason">Routine checkup — blood pressure follow-up</div>
+        </div>
+      </div>
+      <div class="appt-row">
+        <div class="appt-time"><div class="appt-time-val" style="color:#4F46E5;">10:30</div><div class="appt-time-dur">30 min</div></div>
+        <div class="appt-card active">
+          <div class="appt-top"><span class="appt-patient">Rahul Mehta</span><span class="status-pill" style="background:#EEF2FF;color:#4F46E5;">In progress</span></div>
+          <div class="appt-reason">Headache and dizziness — ongoing for 3 days</div>
+          <div class="appt-actions"><button class="btn-primary-sm">Write prescription</button><button class="btn-ghost-sm">Add visit notes</button><button class="btn-ghost-sm">Complete</button></div>
+        </div>
+      </div>
+      <div class="appt-row">
+        <div class="appt-time"><div class="appt-time-val">11:30</div><div class="appt-time-dur">30 min</div></div>
+        <div class="appt-card">
+          <div class="appt-top"><span class="appt-patient">Priya Sharma</span><span class="status-pill" style="background:#FEF9C3;color:#854D0E;">Confirmed</span></div>
+          <div class="appt-reason">Annual physical examination</div>
+        </div>
+      </div>
+      <div class="appt-row">
+        <div class="appt-time"><div class="appt-time-val">14:00</div><div class="appt-time-dur">30 min</div></div>
+        <div class="appt-card">
+          <div class="appt-top"><span class="appt-patient">Amir Hussain</span><span class="status-pill" style="background:#F0FDF4;color:#166534;">Pending</span></div>
+          <div class="appt-reason">Skin rash — possible allergic reaction</div>
+        </div>
+      </div>
+      <div class="appt-row">
+        <div class="appt-time"><div class="appt-time-val">15:00</div><div class="appt-time-dur">30 min</div></div>
+        <div class="appt-card">
+          <div class="appt-top"><span class="appt-patient">Meena Joshi</span><span class="status-pill" style="background:#F0FDF4;color:#166534;">Pending</span></div>
+          <div class="appt-reason">Diabetes management — quarterly review</div>
+        </div>
+      </div>
+    </div>
+    <div class="stats-col">
+      <div class="stats-title">Quick stats</div>
+      <div class="stat-mini"><div class="stat-mini-label">Patients today</div><div class="stat-mini-val">5</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">Seen this week</div><div class="stat-mini-val">18</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">Prescriptions written</div><div class="stat-mini-val">11</div></div>
+      <div style="font-size:13px;font-weight:600;color:#0F172A;margin-top:4px;margin-bottom:4px;">Pending review</div>
+      <div class="pending-card"><div class="pending-name">Rahul Mehta</div><div class="pending-note">Lab results uploaded — awaiting review</div><div class="pending-action">View report</div></div>
+      <div class="pending-card"><div class="pending-name">Meena Joshi</div><div class="pending-note">HbA1c results — 3 days ago</div><div class="pending-action">View report</div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
