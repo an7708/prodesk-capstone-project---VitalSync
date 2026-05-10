@@ -1,3 +1,7 @@
+  // server/models/User.model.js — FIXED
+  // Added: specialty, availabilityStatus
+  // Fixed: missing next() call in pre-save hook (causes hang on register)
+
   const mongoose = require('mongoose');
   const bcrypt = require('bcryptjs');
 
@@ -26,6 +30,19 @@
         enum: ['patient', 'doctor'],
         default: 'patient',
       },
+
+      // ✅ ADDED — required for doctor list in BookAppointment
+      specialty: {
+        type: String,
+        default: '',
+        trim: true,
+      },
+      availabilityStatus: {
+        type: String,
+        enum: ['online', 'busy', 'offline'],
+        default: 'online',
+      },
+
       isActive: {
         type: Boolean,
         default: true,
@@ -38,7 +55,7 @@
     if (!this.isModified('password')) return next();
     const salt = await bcrypt.genSalt(12);
     this.password = await bcrypt.hash(this.password, salt);
-    //next();
+    next(); // ✅ FIXED — was commented out, caused register to hang forever
   });
 
   userSchema.methods.comparePassword = async function (candidatePassword) {

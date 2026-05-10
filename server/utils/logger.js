@@ -1,0 +1,16 @@
+    const winston = require('winston');
+
+    const logger = winston.createLogger({
+    level: process.env.NODE_ENV === 'production' ? 'error' : 'debug',
+    format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+    ),
+    transports: [
+    new winston.transports.Console({
+        silent: process.env.NODE_ENV === 'production',
+    }),
+    ],
+    });
+
+    module.exports = logger;

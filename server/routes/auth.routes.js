@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { register, login, getMe } = require('../controllers/auth.controller');
 const protect = require('../middleware/auth.middleware');
+const validate = require('../middleware/validate.middleware');
+const { registerSchema, loginSchema } = require('../validators/auth.validator');
 
-router.post('/register', register);
-router.post('/login', login);
-router.get('/me', protect, getMe);  // protected route example
+router.post('/register', validate(registerSchema), register);
+router.post('/login', validate(loginSchema), login);
+router.get('/me', protect, getMe);
 
 module.exports = router;

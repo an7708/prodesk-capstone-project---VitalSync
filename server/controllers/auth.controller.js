@@ -1,6 +1,7 @@
     const jwt = require('jsonwebtoken');
     const User = require('../models/User.model');
-
+    const logger = require('../utils/logger');
+    
     const generateToken = (userId) => {
     return jwt.sign(
         { id: userId },
@@ -34,9 +35,13 @@
             role: user.role,
         },
         });
+    // } catch (error) {
+    //     console.error('Register error:', error);
+    //     res.status(500).json({ success: false, message: error.message });
+    // }
     } catch (error) {
-        console.error('Register error:', error);
-        res.status(500).json({ success: false, message: error.message });
+    logger.error('Register error', { message: error.message });
+    res.status(500).json({ success: false, message: error.message });
     }
     };
 
@@ -79,10 +84,15 @@
             role: user.role,
         },
         });
+    // } catch (error) {
+    //     console.error('Login error:', error);
+    //     res.status(500).json({ success: false, message: error.message });
+    // }
     } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ success: false, message: error.message });
+    logger.error('Login error', { message: error.message });
+    res.status(500).json({ success: false, message: error.message });
     }
+
     };
 
     const getMe = async (req, res) => {
