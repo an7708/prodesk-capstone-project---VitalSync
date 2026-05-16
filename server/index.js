@@ -11,22 +11,26 @@
 
     const allowedOrigins = [
     'http://localhost:3000',
-    'http://localhost:5173',           
-    //'https://capstoneproject-umber.vercel.app'  
-    ];
+    'http://localhost:5173',
+    'https://capstoneproject-umber.vercel.app',
+    'https://capstoneproject-umber.vercel.app/'   
+];
 
     app.use(cors({
     origin: (origin, callback) => {
+        console.log('Request Origin:', origin);   
+
         if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
         } else {
+        console.log('Blocked Origin:', origin); 
         callback(new Error('Not allowed by CORS'));
         }
     },
-    credentials: true,                  
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
-    }));
+}));
 
 app.use(express.json());
 
