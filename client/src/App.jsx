@@ -19,7 +19,7 @@ import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentCancel from './pages/PaymentCancel';
 
 import './App.css';
-import Landing from './pages/Landing';
+//import Landing from './pages/Landing';
 
 export default function App() {
     return (
