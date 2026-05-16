@@ -19,16 +19,17 @@
 ];
 
     app.use(cors({
-    origin: (origin, callback) => {
-        console.log('Request Origin:', origin);   
+    // origin: (origin, callback) => {
+    //     console.log('Request Origin:', origin);   
 
-        if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-        } else {
-        console.log('Blocked Origin:', origin); 
-        callback(new Error('Not allowed by CORS'));
-        }
-    },
+    //     if (!origin || allowedOrigins.includes(origin)) {
+    //     callback(null, true);
+    //     } else {
+    //     console.log('Blocked Origin:', origin); 
+    //     callback(new Error('Not allowed by CORS'));
+    //     }
+    // },
+    origin: true, // Allow all origins (for development; restrict in production)
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']

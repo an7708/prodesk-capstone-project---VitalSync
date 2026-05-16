@@ -72,6 +72,12 @@ const onSubmit = async (data) => {
         console.log("Login Success Response:", res.data);
 
         login(res.data.user, res.data.token);
+        
+            setTimeout(() => {
+            const userRole = res.data.user.role || role;
+            navigate(`/${userRole}/dashboard`);
+            }, 300);
+            
         navigate(`/${res.data.user.role}/dashboard`);
 
     } catch (err) {
