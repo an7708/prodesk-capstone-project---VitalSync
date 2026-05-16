@@ -1,12 +1,10 @@
 const logger = {
-    info: (msg, meta) => console.log(`[INFO] ${msg}`, meta || ''),
-    error: (msg, meta) => console.error(`[ERROR] ${msg}`, meta || ''),
-    warn: (msg, meta) => console.warn(`[WARN] ${msg}`, meta || ''),
+    info: (msg, meta) => console.log(`[INFO] ${msg}`, meta ? JSON.stringify(meta) : ''),
+    error: (msg, meta) => console.error(`[ERROR] ${msg}`, meta ? JSON.stringify(meta) : ''),
+    warn: (msg, meta) => console.warn(`[WARN] ${msg}`, meta ? JSON.stringify(meta) : ''),
 };
 
-module.exports = logger;    
-    
-    
+module.exports = logger;
     
     
     
