@@ -16,16 +16,46 @@
         resolver: zodResolver(loginSchema),
     });
 
+    // const onSubmit = async (data) => {
+    //     setServerError('');
+    //     try {
+    //     const res = await api.post('/auth/login', { ...data, role });
+    //     login(res.data.user, res.data.token);
+    //     navigate(`/${res.data.user.role}/dashboard`);
+    //     } catch (err) {
+    //     setServerError(err.response?.data?.message || 'Login failed. Please try again.');
+    //     }
+    // };
     const onSubmit = async (data) => {
-        setServerError('');
-        try {
-        const res = await api.post('/auth/login', { ...data, role });
-        login(res.data.user, res.data.token);
-        navigate(`/${res.data.user.role}/dashboard`);
-        } catch (err) {
-        setServerError(err.response?.data?.message || 'Login failed. Please try again.');
+    setServerError('');
+    
+    try {
+        console.log("Sending login request with:", { ...data, role }); // Debugging
+
+        const res = await api.post('/auth/login', { 
+            email: data.email, 
+            password: data.password, 
+            role 
+        });
+
+        console.log("Login Response:", res.data); // ← Yeh console mein dekho
+
+        if (res.data?.token && res.data?.user) {
+            login(res.data.user, res.data.token);
+            const userRole = res.data.user.role || role;
+            navigate(`/${userRole}/dashboard`);
+        } else {
+            throw new Error("Invalid response from server");
         }
-    };
+
+    } catch (err) {
+        console.error("Login Error Full:", err);
+        const errorMsg = err.response?.data?.message || 
+                        err.response?.data?.error || 
+                        'Login failed. Please try again.';
+        setServerError(errorMsg);
+    }
+};
 
     return (
         <div style={{ minHeight: '100vh', background: '#F0FDF9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
