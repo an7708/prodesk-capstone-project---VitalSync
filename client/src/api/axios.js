@@ -1,8 +1,9 @@
     import axios from 'axios';
 
     const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
-    });
+    baseURL: process.env.REACT_APP_API_URL || 'https://prodesk-capstone-project-vitalsync.onrender.com/api',
+    timeout: 15000,
+});
 
     api.interceptors.request.use((config) => {
     const token = localStorage.getItem('vitalsync_token');

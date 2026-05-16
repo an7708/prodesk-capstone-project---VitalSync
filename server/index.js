@@ -11,7 +11,8 @@
 
     const allowedOrigins = [
     'http://localhost:3000',
-    'https://your-vercel-url.vercel.app', 
+    'http://localhost:5173',           
+    //'https://capstoneproject-umber.vercel.app'  
     ];
 
     app.use(cors({
@@ -22,10 +23,12 @@
         callback(new Error('Not allowed by CORS'));
         }
     },
-    credentials: true,
+    credentials: true,                  
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
     }));
 
-    app.use(express.json());
+app.use(express.json());
 
     const { generalLimiter, authLimiter, aiLimiter } = require('./middleware/rateLimit.middleware');
     app.use('/api', generalLimiter);
