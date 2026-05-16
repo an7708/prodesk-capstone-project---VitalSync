@@ -7,7 +7,24 @@
     const app = express();
     
     // Middleware
-    app.use(cors({ origin: 'http://localhost:3000' }));
+    //app.use(cors({ origin: 'http://localhost:3000' }));
+
+    const allowedOrigins = [
+    'http://localhost:3000',
+    'https://your-vercel-url.vercel.app', 
+    ];
+
+    app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        } else {
+        callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    }));
+
     app.use(express.json());
 
     const { generalLimiter, authLimiter, aiLimiter } = require('./middleware/rateLimit.middleware');
