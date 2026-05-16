@@ -137,7 +137,6 @@ import { useEffect, useState } from 'react';
     const { user } = useAuthStore();
     const [stats, setStats] = useState(null);
     const [doctors, setDoctors] = useState([]);
-    //const [_activity, _setActivity] = useState([]);
     const [loading, setLoading] = useState(true);
     const [aiOpen, setAiOpen] = useState(false); // ✅ controls floating chat panel
     const navigate = useNavigate();
