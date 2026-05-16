@@ -5,6 +5,24 @@
     timeout: 15000,
 });
 
+    api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+        
+        const url = error.config?.url || '';
+        if (url.includes('/login') || url.includes('/auth/login')) {
+            return Promise.reject(error);
+        }
+
+        localStorage.removeItem('vitalsync_token');
+        localStorage.removeItem('vitalsync_user');
+        window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+    );
+
     // api.interceptors.request.use((config) => {
     // const token = localStorage.getItem('vitalsync_token');
     // if (token) {
@@ -24,22 +42,21 @@
     //     return Promise.reject(error);
     // }
     // );
-    api.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        // Sirf tab logout karo jab login ke baad bhi 401 aaye
-        if (error.response?.status === 401) {
-        const isLoginRequest = error.config?.url?.includes('/login') || 
-                                error.config?.url?.includes('/auth/login');
+//     api.interceptors.response.use(
+//     (response) => response,
+//     (error) => {
+//         if (error.response?.status === 401) {
+//         const isLoginRequest = error.config?.url?.includes('/login') || 
+//                                 error.config?.url?.includes('/auth/login');
 
-        if (!isLoginRequest) {
-            localStorage.removeItem('vitalsync_token');
-            localStorage.removeItem('vitalsync_user');
-            window.location.href = '/login';
-        }
-        }
-        return Promise.reject(error);
-    }
-);
+//         if (!isLoginRequest) {
+//             localStorage.removeItem('vitalsync_token');
+//             localStorage.removeItem('vitalsync_user');
+//             window.location.href = '/login';
+//         }
+//         }
+//         return Promise.reject(error);
+//     }
+// );
 
     export default api;
