@@ -13,7 +13,9 @@
     'http://localhost:3000',
     'http://localhost:5173',
     'https://capstoneproject-umber.vercel.app',
-    'https://capstoneproject-umber.vercel.app/'   
+    'https://capstoneproject-umber.vercel.app/',
+    'https://capstoneproject-git-main-an7708s-projects.vercel.app',
+    //'https://capstoneproject-*.vercel.app'
 ];
 
     app.use(cors({

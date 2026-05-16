@@ -1,8 +1,8 @@
     import axios from 'axios';
 
     const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'https://prodesk-capstone-project-vitalsync.onrender.com/api',
-    timeout: 15000,
+    baseURL: process.env.REACT_APP_API_URL || 'https://prodesk-capstone-project-vitalsync.onrender.com/api'
+    //timeout: 15000,
 });
 
     api.interceptors.response.use(

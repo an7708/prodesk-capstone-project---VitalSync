@@ -26,11 +26,42 @@
     //     setServerError(err.response?.data?.message || 'Login failed. Please try again.');
     //     }
     // };
-    const onSubmit = async (data) => {
+//     const onSubmit = async (data) => {
+//     setServerError('');
+    
+//     try {
+//         console.log("Sending login request with:", { ...data, role }); // Debugging
+
+//         const res = await api.post('/auth/login', { 
+//             email: data.email, 
+//             password: data.password, 
+//             role 
+//         });
+
+//         console.log("Login Response:", res.data); // ← Yeh console mein dekho
+
+//         if (res.data?.token && res.data?.user) {
+//             login(res.data.user, res.data.token);
+//             const userRole = res.data.user.role || role;
+//             navigate(`/${userRole}/dashboard`);
+//         } else {
+//             throw new Error("Invalid response from server");
+//         }
+
+//     } catch (err) {
+//         console.error("Login Error Full:", err);
+//         const errorMsg = err.response?.data?.message || 
+//                         err.response?.data?.error || 
+//                         'Login failed. Please try again.';
+//         setServerError(errorMsg);
+//     }
+// };
+
+const onSubmit = async (data) => {
     setServerError('');
     
     try {
-        console.log("Sending login request with:", { ...data, role }); // Debugging
+        console.log("Login Request Sending:", { email: data.email, role });
 
         const res = await api.post('/auth/login', { 
             email: data.email, 
@@ -38,25 +69,24 @@
             role 
         });
 
-        console.log("Login Response:", res.data); // ← Yeh console mein dekho
+        console.log("Login Success Response:", res.data);
 
-        if (res.data?.token && res.data?.user) {
-            login(res.data.user, res.data.token);
-            const userRole = res.data.user.role || role;
-            navigate(`/${userRole}/dashboard`);
-        } else {
-            throw new Error("Invalid response from server");
-        }
+        login(res.data.user, res.data.token);
+        navigate(`/${res.data.user.role}/dashboard`);
 
     } catch (err) {
-        console.error("Login Error Full:", err);
-        const errorMsg = err.response?.data?.message || 
-                        err.response?.data?.error || 
-                        'Login failed. Please try again.';
+        console.error("Full Login Error:", err);
+        console.error("Response Data:", err.response?.data);
+        console.error("Status Code:", err.response?.status);
+
+        const errorMsg = err.response?.data?.message 
+                        || err.response?.data?.error 
+                        || err.message 
+                        || 'Login failed. Please try again.';
+
         setServerError(errorMsg);
     }
 };
-
     return (
         <div style={{ minHeight: '100vh', background: '#F0FDF9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid #E2E8F0', padding: '40px 36px', width: '100%', maxWidth: '420px' }}>
